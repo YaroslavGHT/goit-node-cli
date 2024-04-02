@@ -2,7 +2,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path'; 
 import fs from 'fs/promises';
 import { nanoid } from 'nanoid'
-import { Console } from 'console';
+
 
 const filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(filename);
