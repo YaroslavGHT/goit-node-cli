@@ -2,6 +2,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path'; 
 import fs from 'fs/promises';
 import { nanoid } from 'nanoid'
+import { Console } from 'console';
 
 const filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(filename);
@@ -14,7 +15,6 @@ const listContacts = async() => {
         return JSON.parse(data);
     } catch (error) {
         console.error('Error listing contacts:', error);
-        throw error;
     }
 }
 
@@ -24,22 +24,23 @@ const getContactById = async (contactId) => {
         return contacts.find(contact => contact.id === contactId) || null;
     } catch (error) {
         console.error('Error getting contact by id:', error);
-        throw error;
     }
 }
 
 const removeContact = async (contactId) => {
     try {
         const contacts = await listContacts();
-        const removedContact = contacts.find(contact => contact.id === contactId);
-        if (!removedContact) return null;
-        const updatedContacts = contacts.filter(contact => contact.id !== contactId);
-        await fs.writeFile(contactsPath, JSON.stringify(updatedContacts));
-
+        const removedContIndex = contacts.findIndex(contact => contact.id === contactId);
+        if (removedContIndex === -1) {
+            console.log(`Contact with id ${contactId} was not found.`);
+            return null; 
+        }
+        const removedContact = contacts.splice(removedContIndex, 1)[0]; 
+        await fs.writeFile(contactsPath, JSON.stringify(contacts));
+        console.log(`Contact with id ${contactId} has been removed.`);
         return removedContact;
     } catch (error) {
         console.error('Error removing contact:', error);
-        throw error;
     }
 }
 
