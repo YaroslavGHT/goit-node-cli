@@ -30,6 +30,7 @@ const getContactById = async (contactId) => {
 const removeContact = async (contactId) => {
     try {
         const contacts = await listContacts();
+        const delContscts = await getContactById(contactId);
         const removedContIndex = contacts.findIndex(contact => contact.id === contactId);
         if (removedContIndex === -1) {
             console.log(`Contact with id ${contactId} was not found.`);
@@ -38,6 +39,7 @@ const removeContact = async (contactId) => {
         const removedContact = contacts.splice(removedContIndex, 1)[0]; 
         await fs.writeFile(contactsPath, JSON.stringify(contacts));
         console.log(`Contact with id ${contactId} has been removed.`);
+        console.log(delContscts);
         return removedContact;
     } catch (error) {
         console.error('Error removing contact:', error);
