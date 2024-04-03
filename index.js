@@ -31,6 +31,11 @@ async function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "remove":
+        const delcontact = await getContactById(id);
+        if (!delcontact) {
+          console.log(`Contact with id ${id} was not found.`);
+        }
+        console.log(delcontact);
         await removeContact(id);
       break;
     default:
