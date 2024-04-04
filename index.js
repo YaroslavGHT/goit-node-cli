@@ -31,12 +31,8 @@ async function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "remove":
-        const delcontact = await getContactById(id);
-        if (!delcontact) {
-          console.log(`Contact with id ${id} was not found.`);
-        }
+        const delcontact = await removeContact(id);
         console.log(delcontact);
-        await removeContact(id);
       break;
     default:
       console.warn("\x1B[31m Unknown action type!");

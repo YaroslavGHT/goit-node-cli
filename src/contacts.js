@@ -32,6 +32,7 @@ const removeContact = async (contactId) => {
         const contacts = await listContacts();
         const removedContIndex = contacts.findIndex(contact => contact.id === contactId);
         if (removedContIndex === -1) {
+            console.log(`Contact with id ${contactId} was not found.`);
             return null; 
         }
         const removedContact = contacts.splice(removedContIndex, 1)[0]; 
@@ -49,7 +50,6 @@ const addContact = async (name, email, phone) => {
         const newContact = { id: nanoid(), name, email, phone };
         const updatedContacts = [...contacts, newContact];
         await fs.writeFile(contactsPath, JSON.stringify(updatedContacts));
-        
         return newContact;
     } catch (error) {
         throw error;
